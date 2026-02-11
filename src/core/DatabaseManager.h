@@ -1,5 +1,5 @@
-#ifndef DATABASEMANAGER_H
-#define DATABASEMANAGER_H
+#ifndef RAPIDNOTES_DATABASEMANAGER_H
+#define RAPIDNOTES_DATABASEMANAGER_H
 
 #include <QObject>
 #include <QSqlDatabase>
@@ -7,6 +7,7 @@
 #include <QSqlError>
 #include <QDateTime>
 #include <QVariant>
+#include <QVariantMap>
 #include <QVariantList>
 #include <QRecursiveMutex>
 #include <QStringList>
@@ -32,7 +33,6 @@ public:
     bool deleteNotesBatch(const QList<int>& ids);
     bool updateNoteState(int id, const QString& column, const QVariant& value);
     bool updateNoteStateBatch(const QList<int>& ids, const QString& column, const QVariant& value);
-    // 批量软删除 (放入回收站)
     bool softDeleteNotes(const QList<int>& ids);
     bool toggleNoteState(int id, const QString& column);
     bool moveNoteToCategory(int noteId, int catId);
@@ -74,7 +74,7 @@ public:
     // 搜索与查询
     QList<QVariantMap> searchNotes(const QString& keyword, const QString& filterType = "all", const QVariant& filterValue = -1, int page = -1, int pageSize = 20, const QVariantMap& criteria = QVariantMap());
     int getNotesCount(const QString& keyword, const QString& filterType = "all", const QVariant& filterValue = -1, const QVariantMap& criteria = QVariantMap());
-    QList<QVariantMap> getAllNotes();
+    QList<QVariantMap> getAllNotes_Fixed();
     QStringList getAllTags();
     QList<QVariantMap> getRecentTagsWithCounts(int limit = 20);
     QVariantMap getNoteById(int id);
@@ -94,9 +94,8 @@ public:
                       const QString& sourceApp = "", const QString& sourceTitle = "");
 
 signals:
-    // 【修改】现在信号携带具体数据，实现增量更新
     void noteAdded(const QVariantMap& note);
-    void noteUpdated(); // 用于普通刷新
+    void noteUpdated();
     void categoriesChanged();
 
 private:
@@ -112,13 +111,11 @@ private:
     void applySecurityFilter(QString& whereClause, QVariantList& params, const QString& filterType);
     
     QSqlDatabase m_db;
-    QString m_dbPath;      // 当前正在使用的内核路径 (.notes_core)
-    QString m_realDbPath;  // 最终持久化的外壳路径 (notes.db)
+    QString m_dbPath;
+    QString m_realDbPath;
     QRecursiveMutex m_mutex;
+    QSet<int> m_unlockedCategories;
 
-    QSet<int> m_unlockedCategories; // 仅存储当前会话已解锁的分类 ID
-
-    // 标签剪贴板 (全局静态)
     static QStringList s_tagClipboard;
     static QMutex s_tagClipboardMutex;
 
@@ -127,4 +124,4 @@ public:
     static QStringList getTagClipboard();
 };
 
-#endif // DATABASEMANAGER_H
+#endif // RAPIDNOTES_DATABASEMANAGER_H

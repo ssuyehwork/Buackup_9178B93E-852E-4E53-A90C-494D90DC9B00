@@ -794,7 +794,7 @@ int DatabaseManager::getNotesCount(const QString& keyword, const QString& filter
     return 0;
 }
 
-QList<QVariantMap> DatabaseManager::getAllNotes() {
+QList<QVariantMap> DatabaseManager::getAllNotes_Fixed() {
     QMutexLocker locker(&m_mutex);
     QList<QVariantMap> results;
     if (!m_db.isOpen()) return results;

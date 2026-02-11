@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
     }
 
     // 1.0 设备序列号检查
-    QString currentSerial = FileCryptoHelper::getSystemSerialNumber();
+    QString currentSerial = FileCryptoHelper::getSystemSerialNumber_Fixed();
     if (currentSerial != "SGH412RF00") {
         QMessageBox::critical(nullptr, "授权错误", 
             "该设备未获得授权！\n当前设备序列号: " + currentSerial + "\n请联系开发者进行授权。");
@@ -364,7 +364,7 @@ int main(int argc, char *argv[]) {
         } else if (id == 2) {
             checkLockAndExecute([&](){
                 // 收藏最后一条灵感
-                auto notes = DatabaseManager::instance().getAllNotes();
+                auto notes = DatabaseManager::instance().getAllNotes_Fixed();
                 if (!notes.isEmpty()) {
                     int lastId = notes.first()["id"].toInt();
                     DatabaseManager::instance().updateNoteState(lastId, "is_favorite", 1);

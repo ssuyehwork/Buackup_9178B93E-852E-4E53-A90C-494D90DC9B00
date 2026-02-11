@@ -164,7 +164,7 @@ QString FileCryptoHelper::getCombinedKey() {
     return QCryptographicHash::hash((hardcode + fingerprint).toUtf8(), QCryptographicHash::Sha256).toHex();
 }
 
-QString FileCryptoHelper::getSystemSerialNumber() {
+QString FileCryptoHelper::getSystemSerialNumber_Fixed() {
 #ifdef Q_OS_WIN
     QProcess process;
     process.start("wmic", QStringList() << "bios" << "get" << "serialnumber");
