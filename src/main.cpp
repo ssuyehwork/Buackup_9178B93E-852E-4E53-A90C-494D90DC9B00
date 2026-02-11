@@ -488,6 +488,17 @@ int main(int argc, char *argv[]) {
             SettingsWindow* settingsWin = new SettingsWindow();
             settingsWin->setObjectName("SettingsWindow");
             settingsWin->setAttribute(Qt::WA_DeleteOnClose);
+
+            // 【关键修复】使用 SettingsWindow 的固定尺寸 (700x600) 直接计算居中位置
+            // 避免依赖 rect() 在窗口显示前可能不准确的问题，彻底解决弹出闪烁
+            QScreen *screen = QGuiApplication::primaryScreen();
+            if (screen) {
+                QRect screenGeom = screen->geometry();
+                // 700/2 = 350, 600/2 = 300
+                QPoint topLeft = screenGeom.center() - QPoint(350, 300);
+                settingsWin->move(topLeft);
+            }
+
             settingsWin->show();
         });
     });
