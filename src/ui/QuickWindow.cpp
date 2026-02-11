@@ -654,8 +654,6 @@ void QuickWindow::initUI() {
 
     containerLayout->addWidget(customToolbar);
     
-    // m_toolbar = new QuickToolbar(this); // 移除旧代码
-    // containerLayout->addWidget(m_toolbar); // 移除旧代码
     
     mainLayout->addWidget(container);
     

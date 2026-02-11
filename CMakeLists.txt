@@ -73,14 +73,13 @@ set(SOURCES
     src/ui/FilterPanel.h
     src/ui/NoteDelegate.h
     src/ui/QuickNoteDelegate.h
+    src/ui/CategoryDelegate.h
     src/ui/NoteEditWindow.h    # <--- 必须有
     src/ui/NoteEditWindow.cpp  # <--- 必须有
     src/ui/ScreenshotTool.h
     src/ui/ScreenshotTool.cpp
     src/ui/SearchLineEdit.h
     src/ui/SearchLineEdit.cpp
-    src/ui/WritingAnimation.h
-    src/ui/WritingAnimation.cpp
     src/ui/HelpWindow.h
     src/ui/HelpWindow.cpp
     resources/resources.qrc
